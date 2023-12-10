@@ -1,0 +1,40 @@
+{
+    "ServiceToken": "arn:aws:lambda:us-east-1: 461004555540:function:kendra-index-FnCRdatasource483468B7-VPq1nGD9HftB",
+    "template": {
+        "connectionConfiguration": {
+            "repositoryEndpointMetadata": {
+                "BucketName": "kendra-index-urlsbucket330222cc-9hcij1scwuyd"
+            }
+        },
+        "enableIdentityCrawler": false,
+        "syncMode": "FORCED_FULL_CRAWL",
+        "additionalProperties": {
+            "inclusionPrefixes": [
+                "files_es/"
+            ],
+            "exclusionPatterns": [],
+            "inclusionPatterns": [],
+            "exclusionPrefixes": []
+        },
+        "type": "S3",
+        "version": "1.0.0",
+        "repositoryConfigurations": {
+            "document": {
+                "fieldMappings": [
+                    {
+                        "dataSourceFieldName": "s3_document_id",
+                        "indexFieldName": "DocumentId",
+                        "indexFieldType": "STRING"
+                    }
+                ]
+            }
+        }
+    },
+    "schedule": "",
+    "language_code": "es",
+    "role_arn": "arn:aws:iam: : 461004555540:role/kendra-index-IKSRC7156E80-YlGXxlTtV23e",
+    "name": "cambios-devoluciones",
+    "description": "desde el sitio oficial de latam",
+    "index_id": "5d9eda14-1101-4210-a4bf-3499180d65ea",
+    "type": "TEMPLATE"
+}
