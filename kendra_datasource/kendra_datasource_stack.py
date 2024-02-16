@@ -15,7 +15,6 @@ from lambdas import Lambdas
 
 
 class KendraDatasourceStack(Stack):
-
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
         self.index_id = self.get_kendra_index()
@@ -27,8 +26,9 @@ class KendraDatasourceStack(Stack):
         self.s3_files.deploy("urls","urls", "s3_urls")
         
         self.create_s3_datasource()
-        
         self.create_crawler_datasource()
+        self.create_bedrock_docs()
+        self.create_sagemaker_docs()
 
     def get_kendra_index(self):
         kendra_index_id = self.get_ssm_parameter("kendra-index-id")
@@ -74,3 +74,38 @@ class KendraDatasourceStack(Stack):
                 url_inclusion_patterns=["*.aws.amazon.com/blogs/machine-learning/.*"],
                 url_exclusion_patterns=["*./tag/.*"],
             )
+
+    def create_bedrock_docs(self):
+
+
+        CRKendraCrawlerV2Datasource(
+            self,"BedrockDS",
+            service_token=self.Fn.data_source_creator.function_arn,
+            index_id=self.index_id,
+            role_arn=self.role.arn,
+            name="bedrock-docs-en",
+            crawldepth="10",
+            s3_seed_url=None,
+            seed_urls=["https://docs.aws.amazon.com/bedrock/latest/userguide/"],
+            url_inclusion_patterns=["https://docs.aws.amazon.com/bedrock/latest/userguide/.*"],
+            url_exclusion_patterns=["https://docs.aws.amazon.com/bedrock/latest/APIReference/.*"]#,"*.#.*"],
+        )
+
+    def create_sagemaker_docs(self):
+
+
+        CRKendraCrawlerV2Datasource(
+            self,"SagemakerDS",
+            service_token=self.Fn.data_source_creator.function_arn,
+            index_id=self.index_id,
+            role_arn=self.role.arn,
+            name="sagemaker-docs-en",
+            crawldepth="10",
+            s3_seed_url=None,
+            seed_urls=["https://docs.aws.amazon.com/sagemaker/latest/dg/"],
+            url_inclusion_patterns=["https://docs.aws.amazon.com/sagemaker/latest/dg/.*"],
+            url_exclusion_patterns=["https://docs.aws.amazon.com/sagemaker/latest/APIReference/.*"],
+        )
+
+
+

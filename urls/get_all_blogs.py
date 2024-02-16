@@ -22,7 +22,7 @@ def get_all_links(url):
 
 
 
-starting_page = "https://aws.amazon.com/es/blogs/machine-learning/"
+starting_page = "https://aws.amazon.com/blogs/machine-learning/"
 
 
 blogs = get_all_links(starting_page)
